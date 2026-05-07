@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ĐỀ KIỂM TRA 5 - Đại Tạng Kinh</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f3f6fb;
+    padding:20px;
+    color:#222;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+header{
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
+    color:white;
+    padding:30px 20px;
+    border-radius:20px;
+    text-align:center;
+    margin-bottom:25px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+header h1{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+header p{
+    font-size:18px;
+    opacity:.95;
+}
+
+.question{
+    background:white;
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:22px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    transition:0.3s;
+}
+
+.question:hover{
+    transform:translateY(-2px);
+}
+
+.question h3{
+    margin-bottom:18px;
+    color:#0d47a1;
+    line-height:1.5;
+}
+
+.option{
+    display:block;
+    border:2px solid #dbe4f0;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:12px;
+    cursor:pointer;
+    transition:.25s;
+    font-size:16px;
+}
+
+.option:hover{
+    background:#eef5ff;
+    border-color:#1976d2;
+}
+
+.option.correct{
+    background:#d4edda;
+    border-color:#28a745;
+    color:#155724;
+    font-weight:bold;
+}
+
+.option.wrong{
+    background:#ffe5e5;
+    border-color:#dc3545;
+    color:#721c24;
+}
+
+.option.locked{
+    pointer-events:none;
+}
+
+.feedback{
+    margin-top:8px;
+    font-weight:bold;
+    font-size:15px;
+}
+
+.feedback.correct{
+    color:#28a745;
+}
+
+.feedback.wrong{
+    color:#dc3545;
+}
+
+#submitBtn{
+    width:100%;
+    padding:18px;
+    font-size:20px;
+    border:none;
+    border-radius:14px;
+    background:#0d47a1;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+#submitBtn:hover{
+    background:#1565c0;
+}
+
+#result{
+    margin-top:25px;
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    display:none;
+}
+
+@media(max-width:768px){
+    header h1{
+        font-size:24px;
+    }
+
+    .question{
+        padding:18px;
+    }
+
+    .option{
+        font-size:15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>ĐỀ KIỂM TRA 5</h1>
+    <p>Ấn bản Đại Tạng Kinh và Cấu trúc Đại Chánh Tạng</p>
+</header>
+
+<div id="quiz"></div>
+
+<button id="submitBtn">NỘP BÀI</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"Câu 1: Bộ Đại tạng Kinh chữ Hán đầu tiên là:",
+options:[
+"A. Tư Phước Tạng",
+"B. Viên Giác Tạng",
+"C. Khai Bảo tạng",
+"D. Tỳ Lô Tạng"
+],
+answer:2
+},
+
+{
+q:"Câu 2: Bộ Đại tạng Kinh chữ Hán đầu tiên dùng chỉ may là:",
+options:[
+"A. Tư Phước Tạng",
+"B. Kính Sơn Tạng",
+"C. Khai Bảo tạng",
+"D. Viên Giác Tạng"
+],
+answer:1
+},
+
+{
+q:"Câu 3: Thôi Pháp Trân chặt tay hóa duyên in bộ Đại tạng:",
+options:[
+"A. Khai Bảo tạng",
+"B. Triệu Thành Tạng",
+"C. Kính Sơn Tạng",
+"D. Tư Phước Tạng"
+],
+answer:1
+},
+
+{
+q:"Câu 4: Chặt tay hoá duyên in Đại tạng là:",
+options:[
+"A. Cha Thôi Pháp Trân",
+"B. Thôi Pháp Trân",
+"C. Thôi Tiến",
+"D. Con Thôi Pháp Trân"
+],
+answer:1
+},
+
+{
+q:"Câu 5: Các ấn bản Đại tạng Kinh chữ Hán gồm có các nước:",
+options:[
+"A. Trung Quốc, Cao Ly",
+"B. Trung Quốc, Cao Ly, Nhật",
+"C. Trung Quốc, Nhật",
+"D. Trung Quốc"
+],
+answer:1
+},
+
+{
+q:"Câu 6: Biên tập Đại Chánh Tân Tu Đại tạng Kinh là nước:",
+options:[
+"A. Trung Quốc",
+"B. Trung Quốc, nước Nhật",
+"C. Cao Ly",
+"D. Nhật"
+],
+answer:3
+},
+
+{
+q:"Câu 7: Đại Chánh Tân Tu Đại Tạng Kinh, gọi tắt là:",
+options:[
+"A. Đại Chánh Tân Tu Tạng Kinh",
+"B. Đại Chánh Đại Tạng Kinh",
+"C. Đại Tân Tu Đại Tạng Kinh",
+"D. Đại Chánh Tạng"
+],
+answer:3
+},
+
+{
+q:"Câu 8: Đại Chánh Tân Tu Đại tạng Kinh còn có tên là:",
+options:[
+"A. Đại Nhật Bổn Chánh Tân Tu",
+"B. Đại Nhật Tân Tu Đại Tạng Kinh",
+"C. Đại Nhật Bổn Chánh Tân Tu Đại Tạng Kinh",
+"D. Đại Nhật Bổn Đại Tạng Kinh"
+],
+answer:2
+},
+
+{
+q:"Câu 9: Gọi là Đại Nhật Bổn Chánh Tân Tu Đại Tạng Kinh vì biên tập trong thời gian niên hiệu:",
+options:[
+"A. Đại Chánh tạng (Nhật Bổn)",
+"B. Đại Chánh (Trung Quốc)",
+"C. Đại Chánh (Nhật Bổn)",
+"D. Đại Chánh (Cao Ly)"
+],
+answer:2
+},
+
+{
+q:"Câu 10: Toàn bộ Đại Chánh Tạng chia làm 3 phần",
+options:[
+"A. Chánh tạng, Tục tạng và Tạp tạng",
+"B. Chánh tạng, Tục tạng và mục lục",
+"C. Chánh tạng, Tục tạng và Biệt quyển",
+"D. Chánh tạng, Tục tạng và đồ họa"
+],
+answer:2
+},
+
+{
+q:"Câu 11: Toàn bộ Đại Chánh Tạng gồm có:",
+options:[
+"A. 120 tập",
+"B. 80 tập",
+"C. 100 tập",
+"D. 90 tập"
+],
+answer:2
+},
+
+{
+q:"Câu 12: Biệt quyển gồm có:",
+options:[
+"A. đồ họa 3 tập, tổng mục lục 12 tập",
+"B. đồ họa 12 tập, tổng mục lục 3 tập",
+"C. đồ họa 5 tập, tổng mục lục 10 tập",
+"D. đồ họa 10 tập, tổng mục lục 5 tập"
+],
+answer:0
+},
+
+{
+q:"Câu 13: Phần kinh điển phiên dịch gồm có:",
+options:[
+"A. 30 bộ",
+"B. 8 bộ",
+"C. 16 bộ",
+"D. 7 bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 14: Tạp tạng gồm có:",
+options:[
+"A. 16 bộ",
+"B. 30 bộ",
+"C. 7 bộ",
+"D. 8 bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 15: Chánh tạng gồm có:",
+options:[
+"A. 16 bộ",
+"B. 8 bộ",
+"C. 7 bộ",
+"D. 24 bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 16: Chánh tạng gồm có:",
+options:[
+"A. 23 tập",
+"B. 32 tập",
+"C. 55 tập",
+"D. 30 tập"
+],
+answer:2
+},
+
+{
+q:"Câu 17: Phần kinh điển phiên dịch gồm có:",
+options:[
+"A. 30 tập",
+"B. 32 tập",
+"C. 23 tập",
+"D. 55 tập"
+],
+answer:1
+},
+
+{
+q:"Câu 18: Tục tạng gồm có:",
+options:[
+"A. 55 tập",
+"B. 30 tập",
+"C. 23 tập",
+"D. 32 tập"
+],
+answer:2
+},
+
+{
+q:"Câu 19: Phần Tục tạng gồm có:",
+options:[
+"A. 8 bộ",
+"B. 7 bộ",
+"C. 30 bộ",
+"D. 16 bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 20: Chánh tạng chia làm:",
+options:[
+"A. Phần trước tác soạn thuật",
+"B. Phần kinh điển phiên dịch và phần trước tác soạn thuật",
+"C. Phần kinh điển phiên dịch và Tục tạng",
+"D. Phần kinh điển phiên dịch"
+],
+answer:1
+},
+
+{
+q:"Câu 21: Phần trước tác của các bậc Cao Tăng cổ đức Trung Quốc còn gọi là:",
+options:[
+"A. Biệt quyển",
+"B. Tục tạng",
+"C. Tục tạp tạng",
+"D. Tạp tạng"
+],
+answer:1
+},
+
+{
+q:"Câu 22: Tục tạng, đa số là trước tác của:",
+options:[
+"A. Nhật Bổn",
+"B. Đôn Hoàng",
+"C. Trung Quốc",
+"D. Cao Ly"
+],
+answer:2
+},
+
+{
+q:"Câu 23: Thu thập kinh điển Đôn Hoàng là:",
+options:[
+"A. Cổ dật bộ, Tục chư tông bộ",
+"B. Cổ dật bộ, Tất đàm bộ",
+"C. Nghi tợ bộ, Tất đàm bộ",
+"D. Cổ dật bộ, Nghi tợ bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 24: Bộ Đại Tạng Kinh hiện nay được giới học thuật ưa thích nhất là:",
+options:[
+"A. Đại Chánh Tân Tu Đại Tạng Kinh",
+"B. Đài Loan Đại Tạng Kinh",
+"C. Phật giáo Đại Tạng Kinh",
+"D. Phật Quang Sơn Đại Tạng Kinh"
+],
+answer:0
+},
+
+{
+q:"Câu 25: Kinh tạng gồm có:",
+options:[
+"A. A hàm bộ, Bổn duyên bộ, Bát nhã bộ",
+"B. Bổn duyên bộ, Bát nhã bộ, Du già bộ",
+"C. A hàm bộ, Bổn duyên bộ, Tỳ đàm bộ",
+"D. A hàm bộ, Bát nhã bộ, Thích kinh luận bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 26: Kinh tạng gồm có:",
+options:[
+"A. Hoa nghiêm bộ, Niết bàn bộ, Tỳ đàm bộ",
+"B. Bảo tích bộ, Niết bàn bộ, Du già bộ",
+"C. Hoa nghiêm bộ, Bảo tích bộ, Niết bàn bộ",
+"D. Hoa nghiêm bộ, Bảo tích bộ, Trung quán bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 27: Kinh tạng gồm có:",
+options:[
+"A. Đại tập bộ, Tập kinh bộ, Tỳ đàm bộ",
+"B. Đại tập bộ, Tập kinh bộ, Mật giáo bộ",
+"C. Đại tập bộ, Tập kinh bộ, Du già bộ",
+"D. Đại tập bộ, Tập kinh bộ, Trung quán bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 28: Kinh tạng gồm có:",
+options:[
+"A. Bát nhã bộ, Pháp hoa bộ, Hoa nghiêm bộ",
+"B. Bát nhã bộ, Hoa nghiêm bộ, Du già bộ",
+"C. Bát nhã bộ, Pháp hoa bộ, Du già bộ",
+"D. Hoa nghiêm bộ, Pháp hoa bộ, Tỳ đàm bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 29: Kinh tạng gồm có:",
+options:[
+"A. Pháp hoa bộ, Hoa nghiêm bộ, Du già bộ",
+"B. Pháp hoa bộ, Luật bộ, Niết bàn bộ",
+"C. Pháp hoa bộ, Hoa nghiêm bộ, Bảo tích bộ",
+"D. Pháp hoa bộ, Bảo tích bộ, Tỳ đàm bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 30: Kinh tạng gồm có:",
+options:[
+"A. A hàm bộ, Đại tập bộ, Du già bộ",
+"B. A hàm bộ, Đại tập bộ, Tỳ đàm bộ",
+"C. A hàm bộ, Trung quán bộ, Tập kinh bộ",
+"D. A hàm bộ, Đại tập bộ, Tập kinh bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 31: Kinh tạng gồm có:",
+options:[
+"A. Bổn duyên bộ, Niết bàn bộ, Đại tập bộ",
+"B. Bổn duyên bộ, Niết bàn bộ, Du già bộ",
+"C. Bổn duyên bộ, Trung quán bộ, Đại tập bộ",
+"D. Bổn duyên bộ, Niết bàn bộ, Tỳ đàm bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 32: Kinh tạng gồm có:",
+options:[
+"A. Bát nhã bộ, Luật bộ, Mật giáo bộ",
+"B. Bát nhã bộ, Bảo tích bộ, Tỳ đàm bộ",
+"C. Bát nhã bộ, Niết bàn bộ, Trung quán bộ",
+"D. Bát nhã bộ, Bảo tích bộ, Niết bàn bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 33: Kinh tạng gồm có:",
+options:[
+"A. Bát nhã bộ, Pháp hoa bộ, Hoa nghiêm bộ",
+"B. Bát nhã bộ, Du già bộ, Hoa nghiêm bộ",
+"C. Bát nhã bộ, Pháp hoa bộ, Thích kinh luận bộ",
+"D. Bát nhã bộ, Pháp hoa bộ, Tỳ đàm bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 34: Luận tạng gồm có:",
+options:[
+"A. Thích kinh luận bộ, Tỳ đàm bộ, Bát nhã bộ",
+"B. Thích kinh luận bộ, Tỳ đàm bộ, Trung quán bộ",
+"C. Thích kinh luận bộ, Tỳ đàm bộ, A hàm bộ",
+"D. Thích kinh luận bộ, Tỳ đàm bộ, Bổn duyên bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 35: Luận tạng gồm có:",
+options:[
+"A. Tỳ đàm bộ, Trung quán bộ, Bát nhã bộ",
+"B. Tỳ đàm bộ, Trung quán bộ, A hàm bộ",
+"C. Tỳ đàm bộ, Trung quán bộ, Bổn duyên bộ",
+"D. Tỳ đàm bộ, Trung quán bộ, Du già bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 36: Luận tạng gồm có:",
+options:[
+"A. Trung quán bộ, Bảo tích bộ, Luận tập bộ",
+"B. Trung quán bộ, Bát nhã bộ, Luận tập bộ",
+"C. Trung quán bộ, Du già bộ, Bổn duyên bộ",
+"D. Trung quán bộ, Du già bộ, Luận tập bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 37: Luận tạng gồm có:",
+options:[
+"A. Thích kinh luận bộ, Luật bộ, Luận tập bộ",
+"B. Thích kinh luận bộ, Du già bộ, Đại tập bộ",
+"C. Thích kinh luận bộ, Mật giáo bộ, Luận tập bộ",
+"D. Thích kinh luận bộ, Du già bộ, Luận tập bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 38: Luận tạng gồm có:",
+options:[
+"A. Tỳ đàm bộ, Mật giáo bộ, Luận tập bộ",
+"B. Tỳ đàm bộ, Du già bộ, Luật tập bộ",
+"C. Tỳ đàm bộ, Du già bộ, Luận tập bộ",
+"D. Tỳ đàm bộ, Du già bộ, Tập kinh bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 39: Tạp tạng gồm có:",
+options:[
+"A. Kinh sớ bộ, Luật sớ bộ, Luận bộ",
+"B. Kinh sớ bộ, Luật sớ bộ, Luận sớ bộ",
+"C. Kinh bộ, Luật sớ bộ, Luận sớ bộ",
+"D. Kinh sớ bộ, Luật bộ, Luận sớ bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 40: Tạp tạng gồm có:",
+options:[
+"A. Luật sớ bộ, Luận sớ bộ, Chư tông bộ",
+"B. Luật bộ, Luận sớ bộ, Chư tông bộ",
+"C. Luật sớ bộ, Luận bộ, Chư tông bộ",
+"D. Luật sớ bộ, Luận sớ bộ, Du già bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 41: Tạp tạng gồm có:",
+options:[
+"A. Luận sớ bộ, Chư tông bộ, Nghi tợ bộ",
+"B. Luận bộ, Chư tông bộ, Sử truyện bộ",
+"C. Luận sớ bộ, Chư tông bộ, Sử truyện bộ",
+"D. Luận sớ bộ, Cổ dật bộ, Sử truyện bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 42: Tạp tạng gồm có:",
+options:[
+"A. Chư tông bộ, Sử truyện bộ, Sự hối bộ",
+"B. Sử truyện bộ, Sự hối bộ, Cổ dật bộ",
+"C. Chư tông bộ, Sử truyện bộ, Nghi tợ bộ",
+"D. Chư tông bộ, Cổ dật bộ, Sự hối bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 43: Tạp tạng gồm có:",
+options:[
+"A. Sử truyện bộ, Sự hối bộ, Ngoại giáo bộ",
+"B. Sử truyện bộ, Sự hối bộ, Cổ dật bộ",
+"C. Sử truyện bộ, Nghi tợ bộ, Ngoại giáo bộ",
+"D. Sự hối bộ, Ngoại giáo bộ, Nghi tợ bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 44: Tạp tạng gồm có:",
+options:[
+"A. Kinh sớ bộ, Luật bộ, Sử truyện bộ",
+"B. Kinh sớ bộ, Luật sớ bộ, Nghi tợ bộ",
+"C. Kinh sớ bộ, Luật sớ bộ, Sử truyện bộ",
+"D. Kinh bộ, Luật sớ bộ, Sử truyện bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 45: Tạp tạng gồm có:",
+options:[
+"A. Luật sớ bộ, Luận sớ bộ, Nghi tợ bộ",
+"B. Luật bộ, Luận sớ bộ, Ngoại giáo bộ",
+"C. Luật sớ bộ, Luận bộ, Ngoại giáo bộ",
+"D. Luật sớ bộ, Luận sớ bộ, Ngoại giáo bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 46: Tục tạng gồm có:",
+options:[
+"A. Tục Kinh sớ bộ, Tục luật sớ bộ, Luật sớ bộ",
+"B. Tục Kinh sớ bộ, Tục luật sớ bộ, Tục luận sớ bộ",
+"C. Tục Kinh sớ bộ, Tục luật sớ bộ, Luận bộ",
+"D. Luật bộ, Tục Kinh sớ bộ, Tục luật sớ bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 47: Tục tạng gồm có:",
+options:[
+"A. Cổ Dật Bộ, Nghi tợ bộ, Luật sớ bộ",
+"B. Tất đàm bộ, Cổ Dật Bộ, Nghi tợ bộ",
+"C. Luật bộ, Tất đàm bộ, Cổ Dật Bộ",
+"D. Cổ Dật Bộ, Nghi tợ bộ, Luận bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 48: Tục tạng gồm có:",
+options:[
+"A. Tục chư tông bộ, Tất đàm bộ, Luận bộ",
+"B. Luật bộ, Tục chư tông bộ, Tất đàm bộ",
+"C. Tục chư tông bộ, Tất đàm bộ, Cổ Dật Bộ",
+"D. Tục chư tông bộ, Tất đàm bộ, Luật sớ bộ"
+],
+answer:2
+},
+
+{
+q:"Câu 49: Phần trước tác của Nhật Bổn là:",
+options:[
+"A. Kinh sớ bộ, Tục luật sớ bộ, Tất đàm bộ",
+"B. Tục Kinh sớ bộ, Nghi tợ bộ, Tất đàm bộ",
+"C. Tục Kinh sớ bộ, Tục luật sớ bộ, Nghi tợ bộ",
+"D. Tục Kinh sớ bộ, Tục luật sớ bộ, Tất đàm bộ"
+],
+answer:3
+},
+
+{
+q:"Câu 50: Phần trước tác của Nhật Bổn là:",
+options:[
+"A. Tục Kinh sớ bộ, Chư tông bộ, Tất đàm bộ",
+"B. Tục Kinh sớ bộ, Tục chư tông bộ, Tất đàm bộ",
+"C. Tục Kinh sớ bộ, Nghi tợ bộ, Tất đàm bộ",
+"D. Kinh sớ bộ, Tục chư tông bộ, Tất đàm bộ"
+],
+answer:1
+},
+
+{
+q:"Câu 51: Phần trước tác của Nhật Bổn là:",
+options:[
+"A. Tục luận sớ bộ, Tục chư tông bộ, Tất đàm bộ",
+"B. Tục luận sớ bộ, Chư tông bộ, Tất đàm bộ",
+"C. Luận sớ bộ, Tục chư tông bộ, Tất đàm bộ",
+"D. Tục luận sớ bộ, Tục chư tông bộ, Nghi tợ bộ"
+],
+answer:0
+},
+
+{
+q:"Câu 52: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Nghiêm mật bác thiệp hiệu đính",
+"B. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"C. Chấm câu không chính xác",
+"D. Sự phân loại không hợp lý"
+],
+answer:0
+},
+
+{
+q:"Câu 53: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Biên soạn thanh tân châu mật",
+"B. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"C. Chấm câu sai sót",
+"D. Sự phân loại không hợp lý"
+],
+answer:0
+},
+
+{
+q:"Câu 54: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"B. Sự phân loại không hợp lý",
+"C. Phạm Hán đối chiếu",
+"D. Chấm câu sai sót"
+],
+answer:2
+},
+
+{
+q:"Câu 55: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Chế định sách dẫn",
+"B. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"C. Sự phân loại không hợp lý",
+"D. Chấm câu sai sót"
+],
+answer:0
+},
+
+{
+q:"Câu 56: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Chấm câu sai sót",
+"B. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"C. Sự phân loại không hợp lý",
+"D. Tiện lợi, giá cả thấp"
+],
+answer:3
+},
+
+{
+q:"Câu 57: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Chấm câu sai sót",
+"B. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"C. Sự phân loại không hợp lý",
+"D. Sử dụng phương pháp dùng bản chì chữ nhỏ"
+],
+answer:3
+},
+
+{
+q:"Câu 58: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Chấm câu",
+"B. Chấm câu sai sót",
+"C. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"D. Sự phân loại không hợp lý"
+],
+answer:0
+},
+
+{
+q:"Câu 59: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"B. Sự phân loại đặc sắc",
+"C. Sự phân loại không hợp lý",
+"D. Chấm câu sai sót"
+],
+answer:1
+},
+
+{
+q:"Câu 60: Ưu điểm của Đại Chánh Tạng là:",
+options:[
+"A. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"B. Sự phân loại không hợp lý",
+"C. Chấm câu sai sót",
+"D. Nội dung phong phú"
+],
+answer:3
+},
+
+{
+q:"Câu 61: Khuyết điểm của Đại Chánh Tạng là:",
+options:[
+"A. Sử dụng phương pháp dùng bản chì chữ nhỏ",
+"B. Biên soạn thanh tân châu mật",
+"C. Bỏ sót các trước tác Phật giáo Trung Quốc",
+"D. Nghiêm mật bác thiệp hiệu đính"
+],
+answer:2
+},
+
+{
+q:"Câu 62: Khuyết điểm của Đại Chánh Tạng là:",
+options:[
+"A. Sự phân loại không hợp lý",
+"B. Biên soạn thanh tân châu mật",
+"C. Nghiêm mật bác thiệp hiệu đính",
+"D. Sử dụng phương pháp dùng bản chì chữ nhỏ"
+],
+answer:0
+},
+
+{
+q:"Câu 63: Khuyết điểm của Đại Chánh Tạng là:",
+options:[
+"A. Sử dụng phương pháp dùng bản chì chữ nhỏ",
+"B. Nghiêm mật bác thiệp hiệu đính",
+"C. Biên soạn thanh tân châu mật",
+"D. Chấm câu không chính xác"
+],
+answer:3
+},
+
+{
+q:"Câu 64: Tác phẩm mà Đại Chánh Tạng bỏ sót là:",
+options:[
+"A. A Di Đà Kinh Sớ",
+"B. Thập Nhị Môn luận sớ",
+"C. Ngũ Đăng Hội Nguyên",
+"D. Pháp Hoa Huyền luận"
+],
+answer:2
+},
+
+{
+q:"Câu 65: Khai Bảo tạng được khắc in do:",
+options:[
+"A. Nhà nước",
+"B. Tư nhân",
+"C. Tăng Ni",
+"D. Thôi Pháp Trân"
+],
+answer:0
+},
+
+{
+q:"Câu 66: Bát vạn Đại tạng kinh là:",
+options:[
+"A. Đại Tạng Kinh của Cao Ly",
+"B. Đại Tạng Kinh của Trung Quốc",
+"C. Đại Tạng Kinh của Nhật",
+"D. Đại Tạng Kinh của Đài Loan"
+],
+answer:0
+},
+
+{
+q:"Câu 67: Đại Tạng Kinh của Cao Ly còn gọi là:",
+options:[
+"A. Khai Bảo tạng",
+"B. Triệu Thành Tạng",
+"C. Đại Chánh tạng",
+"D. Bát vạn Đại tạng kinh"
+],
+answer:3
+},
+
+{
+q:"Câu 68: Đồ họa gồm có:",
+options:[
+"A. 3 tập",
+"B. 8 tập",
+"C. 12 tập",
+"D. 5 tập"
+],
+answer:0
+},
+
+{
+q:"Câu 69: Tổng mục lục gồm có:",
+options:[
+"A. 3 tập",
+"B. 8 tập",
+"C. 12 tập",
+"D. 5 tập"
+],
+answer:2
+},
+
+{
+q:"Câu 70: Khai Bảo tạng được khắc vào đời:",
+options:[
+"A. Tống",
+"B. Nguyên",
+"C. Minh",
+"D. Thanh"
+],
+answer:0
+}
+
+];
+
+const quiz=document.getElementById("quiz");
+
+questions.forEach((item,index)=>{
+
+    const div=document.createElement("div");
+    div.className="question";
+
+    let html=`<h3>${item.q}</h3>`;
+
+    item.options.forEach((opt,i)=>{
+
+        html+=`
+        <div class="option"
+             onclick="checkAnswer(${index},${i},this)">
+             ${opt}
+        </div>
+        `;
+    });
+
+    html+=`<div class="feedback" id="feedback-${index}"></div>`;
+
+    div.innerHTML=html;
+
+    quiz.appendChild(div);
+
+});
+
+let score=0;
+let answered=[];
+
+function checkAnswer(qIndex,selected,element){
+
+    if(answered[qIndex]) return;
+
+    const feedback=document.getElementById(`feedback-${qIndex}`);
+    const options=element.parentElement.querySelectorAll(".option");
+
+    if(selected===questions[qIndex].answer){
+
+        element.classList.add("correct");
+
+        feedback.innerHTML="✔ Chính xác!";
+        feedback.className="feedback correct";
+
+        answered[qIndex]=true;
+        score++;
+
+        options.forEach(opt=>{
+            opt.classList.add("locked");
+        });
+
+    }else{
+
+        element.classList.add("wrong");
+
+        feedback.innerHTML="✘ Sai, hãy chọn lại!";
+        feedback.className="feedback wrong";
+
+        setTimeout(()=>{
+            element.classList.remove("wrong");
+        },600);
+    }
+}
+
+document.getElementById("submitBtn").onclick=function(){
+
+    const result=document.getElementById("result");
+
+    result.style.display="block";
+
+    result.innerHTML=`
+        Bạn đúng <span style="color:#0d47a1">${score}</span> / ${questions.length} câu
+    `;
+
+    window.scrollTo({
+        top:document.body.scrollHeight,
+        behavior:"smooth"
+    });
+};
+
+</script>
+
+</body>
+</html>
